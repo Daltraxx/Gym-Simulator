@@ -22,6 +22,16 @@ public class Gym {
     return this.availableMachines.get(machine) > 0;
   }
 
+  public synchronized void useMachine(MachineType machine) {
+    int currentlyAvailable = availableMachines.get(machine) - 1;
+    this.availableMachines.put(machine, currentlyAvailable);
+  }
+
+  public synchronized void vacateMachine(MachineType machine) {
+    int currentlyAvailable = availableMachines.get(machine) + 1;
+    this.availableMachines.put(machine, currentlyAvailable);
+  }
+
   public synchronized boolean checkIfWeightsAvailable(Exercise exercise) {
     for (Weight weight : exercise.getWeight().keySet()) {
       if (this.availableWeights.get(weight) < exercise.getWeight().get(weight)) {
@@ -45,16 +55,6 @@ public class Gym {
       int weightsFinished = exercise.getWeight().get(weight);
       this.availableWeights.put(weight, weightsAvailable + weightsFinished);
     }
-  }
-
-  public synchronized void useMachine(MachineType machine) {
-    int currentlyAvailable = availableMachines.get(machine) - 1;
-    this.availableMachines.put(machine, currentlyAvailable);
-  }
-
-  public synchronized void vacateMachine(MachineType machine) {
-    int currentlyAvailable = availableMachines.get(machine) + 1;
-    this.availableMachines.put(machine, currentlyAvailable);
   }
 
   public void openForTheDay() {
